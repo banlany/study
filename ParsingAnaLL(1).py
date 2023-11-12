@@ -87,7 +87,7 @@ class GrammerAna:
                             for k in range(i+1,j):
                                 new = new and (expression[k] in self.NterminalS and self.nullable[expression[k]])
                             if new:
-                                self.follow[expression[j]] = self.follow[expression[i]].union(self.first[expression[j]])
+                                self.follow[expression[i]] = self.follow[expression[i]].union(self.first[expression[j]])
         keys = list(self.first.keys())
         for i in keys:
             if i not in self.NterminalS:
@@ -142,7 +142,7 @@ class Process:
                 return c
             else:
                 result=None
-                i = 0
+                i = 1
                 try:
                     while i<len(self.expression):
                         if self.expression[i] == '.':
