@@ -179,7 +179,7 @@ class tLL:
                     raise RuntimeError
             else:
                 expression =self.grammer.LL1[self.stack[-1]][self.lexer.peek_token()]
-                print(self.stack[-1]+'->'+(expression if expression!='' else '\'\''))
+                print(self.stack[-1]+'->'+(expression if expression!='' else '#'))
                 self.stack.pop()
                 for i in expression[::-1]:
                     self.stack.append(i)
@@ -198,14 +198,26 @@ if __name__ == '__main__':
         grammer.generate['E']=['E+T','E-T','T']
         grammer.generate['T']=['T*F','T/F','F']
         grammer.generate['F']=['(E)','n']
-        print(grammer.generate)
+        print('---初始文法：')
+        for i in grammer.generate.keys():
+            for x in grammer.generate[i]:
+                print(i+'->'+x)
         grammer.solve_left_recursion()
-        print(grammer.generate)
+        print('---LL文法：')
+        for i in grammer.generate.keys():
+            for x in grammer.generate[i]:
+                print(i+'->'+(x if x!='' else '#'))
         grammer.get_first_follow()
-        print(grammer.first)        
-        print(grammer.follow)
-        print(grammer.nullable)
+        print('---FIRST and FOLLOW:')
+        for i in grammer.first.keys():
+            print(i +' FIRST:'+str(grammer.first[i]))
+        for i in grammer.follow.keys():
+            print(i +' FOLLOW:'+str(grammer.follow[i]))
         grammer.build_LL1()
-        print(grammer.LL1)
+        print('---LL1分析表：')
+        for i in grammer.LL1.keys():
+            for x in grammer.LL1[i].keys():
+                print(i +' match '+x+' do '+i+'->'+str(grammer.LL1[i][x] if grammer.LL1[i][x]!='' else '#'))
+        print('---表达式分析：')
         ll= tLL(grammer,expression)
         ll.parse()
