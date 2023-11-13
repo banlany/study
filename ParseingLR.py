@@ -211,4 +211,4 @@ if __name__ == '__main__':
     expression = str(input("输入表达式： "))
     parser = LR1parser(LRt,expression)
     parser.parse()
-
+    e=input('Enter to exit')

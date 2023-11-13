@@ -226,3 +226,4 @@ if __name__ == '__main__':
         expression=str(input('请输入表达式：'))
         ll= tLL(grammer,expression)
         ll.parse()
+        e=input('Enter to exit')

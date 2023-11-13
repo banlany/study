@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['ParsingAnaLL'],
+    ['ParsingAnaLL.py'],
     pathex=[],
     binaries=[],
     datas=[],
