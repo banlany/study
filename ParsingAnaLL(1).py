@@ -190,7 +190,6 @@ class tLL:
                     self.stack.append(i)
     
 if __name__ == '__main__':
-        expression = "(3 + 5) + 4"
         grammer = GrammerAna()
         grammer.start = 'E'
         grammer.NterminalS.add('E')
@@ -224,5 +223,6 @@ if __name__ == '__main__':
             for x in grammer.LL1[i].keys():
                 print(i +' match '+x+' do '+i+'->'+str(grammer.LL1[i][x] if grammer.LL1[i][x]!='' else '#'))
         print('---表达式分析：')
+        expression=str(input('请输入表达式：'))
         ll= tLL(grammer,expression)
         ll.parse()

@@ -79,15 +79,7 @@ class LR1parser:
 if __name__ == '__main__':
     LRt=LR()
     LRt.grammer= {
-        0: ("S", "E"),
-        1: ("E", "E+T"),
-        2: ("E", "E-T"),
-        3: ("E", "T"),
-        4: ("T", "T*F"),
-        5: ("T", "T/F"),
-        6: ("T", "F"),
-        7: ("F", "(E)"),
-        8: ("F", "n")
+        0: ("S", "E"),1: ("E", "E+T"),2: ("E", "E-T"),3: ("E", "T"),4: ("T", "T*F"),5: ("T", "T/F"),6: ("T", "F"),7: ("F", "(E)"),8: ("F", "n")
     }
     LRt.goto = {
         0: {
@@ -116,6 +108,7 @@ if __name__ == '__main__':
         }
     }
     LRt.action = {
+
         0: {
             '(': ('S', 4),
             'n': ('S', 5)
@@ -215,6 +208,7 @@ if __name__ == '__main__':
             '$': ('R', 7)
         }
     }
-    parser = LR1parser(LRt,'(1 + 1) * 5')
+    expression = str(input("输入表达式： "))
+    parser = LR1parser(LRt,expression)
     parser.parse()
 
