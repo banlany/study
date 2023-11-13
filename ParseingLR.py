@@ -1,4 +1,4 @@
-class LR1:
+class LR:
     def __init__(self):
         self.grammer={}
         self.action={}
