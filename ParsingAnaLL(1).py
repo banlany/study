@@ -171,9 +171,14 @@ class tLL:
         self.stack = ['$',self.grammer.start]
     def parse(self):
         while self.stack[-1]!='$':
+            print('stack:',end='')
+            for i in self.stack:
+                print(i,end='')
+            print('^')
             if self.stack[-1] not in self.grammer.NterminalS:
                 if self.stack[-1] ==self.lexer.peek_token():
-                    self.stack.pop()
+                    nt=self.stack.pop()
+                    print('pop non-terminal:'+nt)
                     self.lexer.next_token()
                 else:
                     raise RuntimeError

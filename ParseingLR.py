@@ -51,10 +51,14 @@ class LR1parser:
     def parse(self):
         flag=True
         while flag:
-            print(self.stack)
+            print('stack:',end='')
+            for i in self.stack:
+                print(i[1],end='')
+            print('^')
             s=self.stack[-1][0]
             c=self.lexer.peek_token()
-            print(str(s)+','+self.stack[-1][1]+'--'+c)
+            print('state:'+str(s))
+            print('读头：'+str(self.stack[-1][1])+'·'+c)
             action = self.table.action[s][c]
             if action[0]=='S':
                 self.stack.append((action[1],c))
@@ -62,14 +66,155 @@ class LR1parser:
                 flag=True
             elif action[0]=='R':
                 r=self.table.grammer[action[1]]
-                for i in range(len(r)):
+                for i in range(len(r[1])):
                     self.stack.pop()
                 if action[1]!=0:
-                    self.stack.append((self.table.goto[self.stack[-1][0]][r[0]],r))
+                    self.stack.append((self.table.goto[self.stack[-1][0]][r[0]],r[0]))
+                print('规约：',end='')
                 print(r[0]+'->'+r[1])
-                flag= (action!=0)
+                flag= (action[1]!=0)
             else:
                 print('error')
                 flag=False
-
+if __name__ == '__main__':
+    LRt=LR()
+    LRt.grammer= {
+        0: ("S", "E"),
+        1: ("E", "E+T"),
+        2: ("E", "E-T"),
+        3: ("E", "T"),
+        4: ("T", "T*F"),
+        5: ("T", "T/F"),
+        6: ("T", "F"),
+        7: ("F", "(E)"),
+        8: ("F", "n")
+    }
+    LRt.goto = {
+        0: {
+            'E': 1,
+            'T': 2,
+            'F': 3
+        },
+        4: {
+            'E': 10,
+            'T': 2,
+            'F': 3
+        },
+        6: {
+            'T': 11,
+            'F': 3
+        },
+        7: {
+            'T': 12,
+            'F': 3
+        },
+        8: {
+            'F': 13
+        },
+        9: {
+            'F': 14
+        }
+    }
+    LRt.action = {
+        0: {
+            '(': ('S', 4),
+            'n': ('S', 5)
+        },
+        1: {
+            '+': ('S', 6),
+            '-': ('S', 7),
+            '$': ('R', 0)
+        },
+        2: {
+            '+': ('R', 3),
+            '-': ('R', 3),
+            '*': ('S', 8),
+            '/': ('S', 9),
+            ')': ('R', 3),
+            '$': ('R', 3)
+        },
+        3: {
+            '+': ('R', 6),
+            '-': ('R', 6),
+            '*': ('R', 6),
+            '/': ('R', 6),
+            ')': ('R', 6),
+            '$': ('R', 6)
+        },
+        4: {
+            '(': ('S', 4),
+            'n': ('S', 5)
+        },
+        5: {
+            '+': ('R', 8),
+            '-': ('R', 8),
+            '*': ('R', 8),
+            '/': ('R', 8),
+            ')': ('R', 8),
+            '$': ('R', 8)
+        },
+        6: {
+            '(': ('S', 4),
+            'n': ('S', 5)
+        },
+        7: {
+            '(': ('S', 4),
+            'n': ('S', 5)
+        },
+        8: {
+            '(': ('S', 4),
+            'n': ('S', 5)
+        },
+        9: {
+            '(': ('S', 4),
+            'n': ('S', 5)
+        },
+        10: {
+            '+': ('S', 6),
+            '-': ('S', 7),
+            ')': ('S', 15)
+        },
+        11: {
+            '+': ('R', 1),
+            '-': ('R', 1),
+            '*': ('S', 8),
+            '/': ('S', 9),
+            ')': ('R', 1),
+            '$': ('R', 1)
+        },
+        12: {
+            '+': ('R', 2),
+            '-': ('R', 2),
+            '*': ('S', 8),
+            '/': ('S', 9),
+            ')': ('R', 2),
+            '$': ('R', 2)
+        },
+        13: {
+            '+': ('R', 4),
+            '-': ('R', 4),
+            '*': ('R', 4),
+            '/': ('R', 4),
+            ')': ('R', 4),
+            '$': ('R', 4)
+        },
+        14: {
+            '+': ('R', 5),
+            '-': ('R', 5),
+            '*': ('R', 5),
+            '/': ('R', 5),
+            ')': ('R', 5),
+            '$': ('R', 5)
+        },
+        15: {
+            '+': ('R', 7),
+            '-': ('R', 7),
+            '*': ('R', 7),
+            '/': ('R', 7),
+            ')': ('R', 7),
+            '$': ('R', 7)
+        }
+    }
+    parser = LR1parser(LRt,'(1 + 1) * 5')
+    parser.parse()
 
